@@ -1,26 +1,45 @@
 @import "tailwindcss";
+@plugin "daisyui";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.user-profile {
+	width: 131px;
+	height: 51px;
+	border-radius: 15px;
+	cursor: pointer;
+	transition: 0.3s ease;
+	background: linear-gradient(
+		to bottom right,
+		#2e8eff 0%,
+		rgba(46, 142, 255, 0) 30%
+	);
+	background-color: rgba(46, 142, 255, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.user-profile:hover,
+.user-profile:focus {
+	background-color: rgba(46, 142, 255, 0.7);
+	box-shadow: 0 0 10px rgba(46, 142, 255, 0.5);
+	outline: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.user-profile-inner {
+	width: 127px;
+	height: 47px;
+	border-radius: 13px;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 15px;
+	color: #0f172a;
+	font-weight: 600;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.user-profile-inner svg {
+	width: 27px;
+	height: 27px;
+	fill: #0f172a;
 }

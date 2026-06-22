@@ -3,25 +3,42 @@
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { Card, Separator, Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 const SignUpPage = () => {
   const router = useRouter();
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
-    // Example: handle sign-up logic here
-    console.log("User submitted:", user);
+    const { data, error } = await authClient.signUp.email({
+      email: user.email,
+      password: user.password,
+      name: user.name,
+      image: user.image,
+    });
 
-    router.push("/");
+    if (error) {
+      toast.error(error.message || "Sign up failed. Please try again.");
+      return;
+    }
+
+    if (data) {
+      toast.success("Account created successfully.");
+      router.push("/");
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Google sign-in clicked");
-    // Example: handle Google login here
+  const handleGoogleSignIn = async () => {
+    const { error } = await authClient.signIn.social({ provider: "google" });
+
+    if (error) {
+      toast.error(error.message || "Google sign-in failed. Please try again.");
+    }
   };
 
   return (

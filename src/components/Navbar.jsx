@@ -45,7 +45,7 @@ function Navbar() {
             Home
           </Link>
           <Link
-            href="#highlights"
+            href="/#all-prompts"
             className="btn btn-ghost btn-sm border border-transparent text-2xl text-slate-700 hover:border-slate-200 hover:bg-slate-100"
           >
             All Prompts

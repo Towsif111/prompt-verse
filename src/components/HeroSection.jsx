@@ -73,6 +73,8 @@ export default function HeroSection() {
         className="mt-10"
       >
         <Button
+          as={"a"}
+          href="#all-prompts"
           className="bg-red-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-600 transition-all"
         >
           Explore Prompts

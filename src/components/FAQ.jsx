@@ -40,8 +40,7 @@ export default function FaqSection() {
         </p>
         <h2 className="text-4xl font-black text-center mb-2 bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">
           Frequently Asked Questions
-        </h2>
-        <p className="text-center text-slate-500 mb-10">
+        </h2>          <p className="text-center mb-10" style={{ color: 'var(--color-text-secondary)' }}>
           Everything you need to know about PromptVerse
         </p>
       </motion.div>
@@ -55,15 +54,15 @@ export default function FaqSection() {
             viewport={{ once: true }}
             transition={{ delay: index * 0.05, duration: 0.3 }}
           >
-            <details className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md open:shadow-md">
-              <summary className="flex cursor-pointer items-center justify-between font-semibold text-slate-800 list-none">
+            <details className="group rounded-xl p-5 shadow-sm transition hover:shadow-md open:shadow-md" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+              <summary className="flex cursor-pointer items-center justify-between font-semibold list-none" style={{ color: 'var(--color-text)' }}>
                 {faq.question}
                 <ChevronDown
                   size={18}
                   className="shrink-0 text-slate-400 transition duration-200 group-open:rotate-180"
                 />
               </summary>
-              <p className="mt-3 text-sm leading-relaxed text-slate-500 border-t border-slate-100 pt-3">
+              <p className="mt-3 text-sm leading-relaxed border-t pt-3" style={{ color: 'var(--color-text-secondary)', borderColor: 'var(--color-border-light)' }}>
                 {faq.answer}
               </p>
             </details>

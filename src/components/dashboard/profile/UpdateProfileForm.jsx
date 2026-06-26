@@ -38,8 +38,8 @@ export function UpdateProfileForm({ user, onUpdate }) {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h3 className="mb-5 text-lg font-semibold text-slate-900">
+    <div className="rounded-2xl p-6 shadow-sm" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+      <h3 className="mb-5 text-lg font-semibold" style={{ color: 'var(--color-text)' }}>
         Update Profile
       </h3>
 
@@ -73,7 +73,7 @@ export function UpdateProfileForm({ user, onUpdate }) {
           <FieldError />
         </TextField>
 
-        {/* Image preview */}
+        {}
         {image && (
           <div className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3">
             <img

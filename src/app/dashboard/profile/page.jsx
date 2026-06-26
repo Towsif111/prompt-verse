@@ -34,7 +34,7 @@ export default function ProfilePage() {
     <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
       <div className="flex items-center gap-3">
         <Settings className="h-6 w-6 text-slate-600" />
-        <h1 className="text-2xl font-bold text-slate-900">Profile Settings</h1>
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text)' }}>Profile Settings</h1>
       </div>
 
       <ProfileCard user={user} />

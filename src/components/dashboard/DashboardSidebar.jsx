@@ -74,12 +74,12 @@ export function DashboardSidebar() {
 
   const sidebarContent = (
     <>
-      <div className="flex items-center gap-3 border-b border-slate-100 px-5 py-4">
+      <div className="flex items-center gap-3 border-b px-5 py-4" style={{ borderColor: 'var(--color-border-light)' }}>
         <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${avatarGradient} text-white font-bold`}>
           {role === "Admin" ? <Shield className="h-5 w-5" /> : role === "Creator" ? <Crown className="h-5 w-5" /> : <User className="h-5 w-5" />}
         </div>
         <div className="min-w-0">
-          <p className="text-sm font-bold text-slate-800 truncate">{user?.name || "User"}</p>
+          <p className="text-sm font-bold truncate" style={{ color: 'var(--color-text)' }}>{user?.name || "User"}</p>
           <span className={`rounded-full bg-gradient-to-r ${roleBadgeColor} px-2 py-0.5 text-xs font-medium text-white`}>{roleBadgeText}</span>
         </div>
       </div>
@@ -92,11 +92,11 @@ export function DashboardSidebar() {
             onClick={() => setMobileOpen(false)}
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
               isActive(item.href)
-                ? "bg-gradient-to-r from-cyan-50 to-indigo-50 text-cyan-700 font-semibold"
-                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                ? "bg-gradient-to-r from-cyan-50 to-indigo-50 dark:from-cyan-900/30 dark:to-indigo-900/30 text-cyan-700 dark:text-cyan-300 font-semibold"
+                : "hover:bg-slate-100 dark:hover:bg-slate-700"
             }`}
           >
-            <item.icon className={`h-5 w-5 ${isActive(item.href) ? "text-cyan-600" : ""}`} />
+            <item.icon className={`h-5 w-5 ${isActive(item.href) ? "text-cyan-600 dark:text-cyan-400" : ""}`} style={{ color: isActive(item.href) ? undefined : 'var(--color-text-secondary)' }} />
             {item.label}
           </Link>
         ))}
@@ -118,19 +118,19 @@ export function DashboardSidebar() {
 
   return (
     <>
-      <button onClick={() => setMobileOpen(!mobileOpen)} className="fixed left-4 top-[60px] z-50 flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-slate-200 shadow-md lg:hidden" aria-label="Toggle sidebar">
-        {mobileOpen ? <X className="h-5 w-5 text-slate-600" /> : <Menu className="h-5 w-5 text-slate-600" />}
+      <button onClick={() => setMobileOpen(!mobileOpen)} className="fixed left-4 top-[60px] z-50 flex h-10 w-10 items-center justify-center rounded-xl shadow-md lg:hidden transition-colors" style={{ backgroundColor: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)', borderWidth: '1px', borderStyle: 'solid' }} aria-label="Toggle sidebar">
+        {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
-      {mobileOpen && <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm lg:hidden" onClick={() => setMobileOpen(false)} />}
+      {mobileOpen && <div className="fixed inset-0 z-40 bg-black/30 dark:bg-black/60 backdrop-blur-sm lg:hidden" onClick={() => setMobileOpen(false)} />}
 
-      <aside className={`fixed left-0 top-0 z-50 flex h-full w-64 shrink-0 flex-col border-r border-slate-200 bg-white transition-transform duration-300 lg:hidden ${
+      <aside className={`fixed left-0 top-0 z-50 flex h-full w-64 shrink-0 flex-col border-r transition-transform duration-300 lg:hidden ${
         mobileOpen ? "translate-x-0" : "-translate-x-full"
-      }`}>
+      }`} style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-bg)' }}>
         {sidebarContent}
       </aside>
 
-      <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
+      <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-bg)' }}>
         {sidebarContent}
       </aside>
     </>

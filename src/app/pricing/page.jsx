@@ -77,9 +77,9 @@ export default function PricingPage() {
   const isPremium = user?.subscription === "Premium" || user?.subscription === "premium";
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-slate-100 bg-gradient-to-b from-slate-50 via-white to-white">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)' }}>
+      {}
+      <section className="relative overflow-hidden border-b transition-colors duration-300" style={{ borderColor: 'var(--color-border)', background: `linear-gradient(to bottom, var(--color-bg-secondary), var(--color-bg), var(--color-bg))` }}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-cyan-200/30 to-indigo-200/30 blur-3xl" />
           <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-tr from-amber-200/20 to-orange-200/20 blur-3xl" />
@@ -96,30 +96,29 @@ export default function PricingPage() {
               <Sparkles className="h-4 w-4" />
               Simple, transparent pricing
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight" style={{ color: 'var(--color-text)' }}>
               Choose your{" "}
               <span className="bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">
                 plan
               </span>
             </h1>
-            <p className="mt-4 text-lg text-slate-500 max-w-2xl mx-auto">
+            <p className="mt-4 text-lg max-w-2xl mx-auto" style={{ color: 'var(--color-text-secondary)' }}>
               Start for free, upgrade when you need more. No hidden fees, no monthly commitments.
             </p>
           </motion.div>
 
-          {/* Pricing Cards */}
+          {}
           <div className="mt-14 grid gap-8 lg:grid-cols-2 max-w-4xl mx-auto">
             {plans.map((plan, index) => (
               <motion.div
                 key={plan.name}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                className={`relative rounded-3xl border-2 p-8 shadow-sm transition-all duration-300 hover:shadow-xl ${
-                  plan.popular
-                    ? "border-amber-200 bg-gradient-to-b from-amber-50/50 to-white shadow-amber-100/30"
-                    : "border-slate-200 bg-white hover:border-slate-300"
-                }`}
+                transition={{ duration: 0.5, delay: index * 0.15 }}                    className={`relative rounded-3xl border-2 p-8 shadow-sm transition-all duration-300 hover:shadow-xl`}
+                    style={{
+                      borderColor: plan.popular ? 'var(--color-border)' : 'var(--color-border)',
+                      backgroundColor: plan.popular ? 'color-mix(in srgb, var(--color-bg) 95%, amber)' : 'var(--color-surface)'
+                    }}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2">
@@ -135,14 +134,14 @@ export default function PricingPage() {
                     <div className={`mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${plan.color} text-white shadow-md`}>
                       <plan.icon className="h-6 w-6" />
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900">{plan.name}</h3>
-                    <p className="text-sm text-slate-500 mt-1">{plan.description}</p>
+                    <h3 className="text-xl font-bold" style={{ color: 'var(--color-text)' }}>{plan.name}</h3>
+                    <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>{plan.description}</p>
                   </div>
                 </div>
 
                 <div className="my-6">
-                  <span className="text-5xl font-black text-slate-900">{plan.price}</span>
-                  <span className="ml-2 text-sm text-slate-500">{plan.period}</span>
+                  <span className="text-5xl font-black" style={{ color: 'var(--color-text)' }}>{plan.price}</span>
+                  <span className="ml-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>{plan.period}</span>
                 </div>
 
                 {isPremium && plan.name === "Premium" ? (
@@ -178,7 +177,7 @@ export default function PricingPage() {
                           <X className="h-3 w-3 text-slate-400" />
                         </div>
                       )}
-                      <span className={`text-sm ${feature.included ? "text-slate-700" : "text-slate-400"}`}>
+                      <span className={`text-sm ${feature.included ? "" : ""}`} style={{ color: feature.included ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
                         {feature.text}
                       </span>
                     </li>
@@ -190,7 +189,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Feature Comparison Table */}
+      {}
       <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -198,10 +197,10 @@ export default function PricingPage() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
+          <h2 className="text-3xl sm:text-4xl font-black" style={{ color: 'var(--color-text)' }}>
             Full Feature Comparison
           </h2>
-          <p className="mt-3 text-slate-500">
+          <p className="mt-3" style={{ color: 'var(--color-text-secondary)' }}>
             Everything you get with each plan, side by side.
           </p>
         </motion.div>
@@ -210,12 +209,12 @@ export default function PricingPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm"
+          className="overflow-x-auto rounded-2xl shadow-sm" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}
         >
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50">
-                <th className="px-6 py-4 text-left font-semibold text-slate-600">Feature</th>
+              <tr className="border-b" style={{ borderColor: 'var(--color-border-light)', backgroundColor: 'var(--color-bg-secondary)' }}>
+                <th className="px-6 py-4 text-left font-semibold" style={{ color: 'var(--color-text-secondary)' }}>Feature</th>
                 <th className="px-6 py-4 text-center font-semibold text-slate-600">
                   <span className="text-cyan-700">Free</span>
                 </th>
@@ -240,8 +239,8 @@ export default function PricingPage() {
                 { feature: "Advanced Analytics", free: false, premium: true },
                 { feature: "Premium Badge", free: false, premium: true },
               ].map((row, idx) => (
-                <tr key={idx} className="border-b border-slate-50 hover:bg-slate-50/50 transition">
-                  <td className="px-6 py-4 font-medium text-slate-800">{row.feature}</td>
+                <tr key={idx} className="border-b transition" style={{ borderColor: 'var(--color-border-light)' }}>
+                  <td className="px-6 py-4 font-medium" style={{ color: 'var(--color-text)' }}>{row.feature}</td>
                   <td className="px-6 py-4 text-center">
                     {typeof row.free === "string" ? (
                       <span className="text-sm text-slate-500">{row.free}</span>
@@ -267,8 +266,8 @@ export default function PricingPage() {
         </motion.div>
       </section>
 
-      {/* FAQ */}
-      <section className="border-t border-slate-100 bg-slate-50/50">
+      {}
+      <section className="border-t transition-colors duration-300" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-bg-secondary)' }}>
         <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -276,8 +275,8 @@ export default function PricingPage() {
             viewport={{ once: true }}
             className="text-center mb-10"
           >
-            <h2 className="text-3xl font-black text-slate-900">Frequently Asked Questions</h2>
-            <p className="mt-2 text-slate-500">Have more questions? We&apos;re here to help.</p>
+            <h2 className="text-3xl font-black" style={{ color: 'var(--color-text)' }}>Frequently Asked Questions</h2>
+            <p className="mt-2" style={{ color: 'var(--color-text-secondary)' }}>Have more questions? We&apos;re here to help.</p>
           </motion.div>
 
           <div className="space-y-3">
@@ -289,8 +288,8 @@ export default function PricingPage() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.05 }}
               >
-                <details className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md open:shadow-md">
-                  <summary className="flex cursor-pointer items-center justify-between font-semibold text-slate-800 list-none">
+                <details className="group rounded-xl p-5 shadow-sm transition hover:shadow-md open:shadow-md" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+                  <summary className="flex cursor-pointer items-center justify-between font-semibold list-none" style={{ color: 'var(--color-text)' }}>
                     {faq.q}
                     <svg
                       className="h-5 w-5 shrink-0 text-slate-400 transition group-open:rotate-180"
@@ -301,7 +300,7 @@ export default function PricingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </summary>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-500 border-t border-slate-100 pt-3">
+                  <p className="mt-3 text-sm leading-relaxed border-t pt-3" style={{ color: 'var(--color-text-secondary)', borderColor: 'var(--color-border-light)' }}>
                     {faq.a}
                   </p>
                 </details>
@@ -315,7 +314,7 @@ export default function PricingPage() {
             viewport={{ once: true }}
             className="mt-12 text-center"
           >
-            <p className="text-slate-500 mb-4">Still have questions?</p>
+            <p className="mb-4" style={{ color: 'var(--color-text-secondary)' }}>Still have questions?</p>
             <Link
               href="/"
               className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-lg hover:shadow-xl transition-all"
@@ -327,7 +326,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* CTA Banner */}
+      {}
       <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

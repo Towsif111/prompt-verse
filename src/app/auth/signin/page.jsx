@@ -26,7 +26,7 @@ const SignInPage = () => {
     }
 
     if (data) {
-      // Also sign in to Express server to get JWT for API calls
+      
       try {
         const expressRes = await fetch("http://localhost:5000/auth/login", {
           method: "POST",
@@ -58,13 +58,13 @@ const SignInPage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-7xl py-10">
-      <div className="text-center mb-6">
-        <h1 className="font-bold text-3xl">Sign In</h1>
-        <p className="text-gray-600">Welcome back to PromptVerse</p>
+    <div className="mx-auto max-w-7xl px-4 py-10">
+      <div className="text-center mb-6 mx-auto max-w-md">
+        <h1 className="font-bold text-3xl" style={{ color: 'var(--color-text)' }}>Sign In</h1>
+        <p className="text-sm sm:text-base" style={{ color: 'var(--color-text-secondary)' }}>Welcome back to PromptVerse</p>
       </div>
 
-      <Card className="border p-6 w-full max-w-md mx-auto">
+      <Card className="p-4 sm:p-6 w-full max-w-md mx-auto" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
         <Form onSubmit={onSubmit} className="flex flex-col gap-4">
           <TextField
             isRequired
@@ -98,19 +98,18 @@ const SignInPage = () => {
 
         <div className="flex items-center justify-center gap-2 my-4">
           <Separator className="w-50" />
-          <span className="text-xs text-gray-500">Or</span>
+          <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Or</span>
           <Separator className="w-50" />
         </div>
 
         <Button onClick={handleGoogleSignIn} className="w-full rounded-none">
           <FcGoogle className="mr-2" /> Sign in with Google
         </Button>
-
-        <p className="text-center text-sm mt-4">
-          Don’t have an account?{" "}
+        <p className="text-center text-sm mt-4" style={{ color: 'var(--color-text-secondary)' }}>
+          Don&apos;t have an account?{" "}
           <span
             onClick={() => router.push("/auth/signup")}
-            className="text-blue-600 cursor-pointer"
+            className="text-blue-600 cursor-pointer hover:underline"
           >
             Create one
           </span>

@@ -3,42 +3,42 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Users, Shield, Crown, User, Sparkles, ChevronLeft, Mail, KeyRound, LogIn, Loader2 } from "lucide-react";
+import { Users, Shield, Crown, User, Sparkles, ChevronLeft, Mail, KeyRound, LogIn, Loader2, Eye, EyeOff } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const DEMO_USERS = [
   {
     id: 1,
-    name: "Admin Demo",
+    name: "Alex Mason",
     email: "admin@demo.com",
     password: "Demo@123",
     address: "789 Admin Blvd, Austin, TX 73301",
     role: "Admin",
     bio: "Platform administrator with full access",
-    avatarColor: "from-indigo-400 to-purple-600",
+    avatar: "",
     promptsCount: 12,
   },
   {
     id: 2,
-    name: "Creator Demo",
+    name: "John Cena",
     email: "creator@demo.com",
     password: "Demo@123",
     address: "123 Creator Lane, San Francisco, CA 94102",
     role: "Creator",
     bio: "AI prompt engineer & content creator",
-    avatarColor: "from-amber-400 to-orange-500",
+    avatar: "from-amber-400 to-orange-500",
     promptsCount: 24,
   },
   {
     id: 3,
-    name: "User Demo",
+    name: "Maya Haque",
     email: "user@demo.com",
     password: "Demo@123",
     address: "456 Developer Ave, New York, NY 10001",
     role: "User",
     bio: "Frontend developer & AI enthusiast",
-    avatarColor: "from-cyan-400 to-blue-500",
+    avatar: "from-cyan-400 to-blue-500",
     promptsCount: 5,
   },
 ];
@@ -47,12 +47,6 @@ const roleIcons = {
   Admin: Shield,
   Creator: Crown,
   User: User,
-};
-
-const roleStyles = {
-  Admin: "bg-indigo-50 text-indigo-700 ring-indigo-200",
-  Creator: "bg-amber-50 text-amber-700 ring-amber-200",
-  User: "bg-cyan-50 text-cyan-700 ring-cyan-200",
 };
 
 const roleGradients = {
@@ -64,25 +58,22 @@ const roleGradients = {
 export default function DemoUsersPage() {
   const router = useRouter();
   const [loggingInAs, setLoggingInAs] = useState(null);
+  const [visiblePassword, setVisiblePassword] = useState(null);
 
   const handleLogin = async (user) => {
     setLoggingInAs(user.id);
     try {
-      // 1. Seed demo users on the Express backend first
       try {
         await fetch("http://localhost:5000/auth/seed-demo", { method: "POST" });
       } catch (err) {
         console.error("Backend seed failed:", err);
-        // Continue anyway — backend might be down
       }
 
-      // 2. Try Better Auth sign in
       let authResult = await authClient.signIn.email({
         email: user.email,
         password: user.password,
       });
 
-      // 3. If sign in fails, try registering the user first
       if (authResult.error) {
         const registerResult = await authClient.signUp.email({
           email: user.email,
@@ -96,7 +87,6 @@ export default function DemoUsersPage() {
           return;
         }
 
-        // Retry sign in after registration
         authResult = await authClient.signIn.email({
           email: user.email,
           password: user.password,
@@ -110,7 +100,6 @@ export default function DemoUsersPage() {
       }
 
       if (authResult.data) {
-        // 4. Sync with Express server for JWT
         try {
           const expressRes = await fetch("http://localhost:5000/auth/login", {
             method: "POST",
@@ -135,46 +124,36 @@ export default function DemoUsersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      {/* Header */}
-      <div className="border-b border-slate-200 bg-white/80 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700 transition"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Back to Home
-          </Link>
-        </div>
+    <div className="min-h-screen transition-colors duration-300" style={{ backgroundColor: 'var(--color-bg)' }}>
+      <div className="border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm transition-colors duration-300" style={{ backgroundColor: 'var(--color-navbar-bg)' }}>
+        
       </div>
 
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        {/* Page heading */}
         <div className="mb-10 text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-600 shadow-lg shadow-cyan-500/20 mb-4">
             <Users className="h-7 w-7 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">
+          <h1 className="text-3xl font-bold sm:text-4xl" style={{ color: 'var(--color-text)' }}>
             Demo Users
           </h1>
-          <p className="mt-3 text-base text-slate-500 max-w-lg mx-auto">
+          <p className="mt-3 text-base max-w-lg mx-auto" style={{ color: 'var(--color-text-secondary)' }}>
             Click on any demo user to instantly sign in and explore the platform with their role.
           </p>
         </div>
 
-        {/* Users grid */}
         <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
           {DEMO_USERS.map((user) => {
             const RoleIcon = roleIcons[user.role] || User;
             const isLoggingIn = loggingInAs === user.id;
+            const isPasswordVisible = visiblePassword === user.id;
 
             return (
               <div
                 key={user.id}
-                className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:shadow-lg hover:border-slate-300 overflow-hidden"
+                className="group relative flex flex-col rounded-2xl border shadow-sm transition-all duration-200 hover:shadow-lg overflow-hidden"
+                style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}
               >
-                {/* Role header gradient */}
                 <div className={`bg-gradient-to-r ${roleGradients[user.role]} px-5 py-4`}>
                   <div className="flex items-center justify-between">
                     <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm text-lg font-bold text-white shadow-sm">
@@ -191,35 +170,40 @@ export default function DemoUsersPage() {
                 </div>
 
                 <div className="flex flex-col flex-1 p-5">
-                  {/* Name & bio */}
-                  <h3 className="text-lg font-semibold text-slate-900 mb-1">
+                  <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--color-text)' }}>
                     {user.name}
                   </h3>
-                  <p className="text-sm text-slate-500 mb-3">{user.bio}</p>
+                  <p className="text-sm mb-3" style={{ color: 'var(--color-text-secondary)' }}>{user.bio}</p>
 
-                  {/* Address */}
-                  <div className="flex items-start gap-2 text-sm text-slate-500 mb-4">
-                    <Sparkles className="h-3.5 w-3.5 shrink-0 text-slate-400 mt-0.5" />
+                  <div className="flex items-start gap-2 text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>
+                    <Sparkles className="h-3.5 w-3.5 shrink-0 mt-0.5" style={{ color: 'var(--color-text-muted)' }} />
                     <span>{user.address}</span>
                   </div>
 
-                  {/* Credentials card */}
-                  <div className="mt-auto rounded-xl border border-dashed border-slate-200 bg-slate-50/50 p-3.5 space-y-2.5">
+                  <div className="mt-auto rounded-xl border border-dashed p-3.5 space-y-2.5" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-bg-secondary)' }}>
                     <div className="flex items-center gap-2 text-sm">
-                      <Mail className="h-3.5 w-3.5 shrink-0 text-slate-400" />
-                      <code className="flex-1 truncate rounded bg-white px-2 py-0.5 text-xs font-mono text-slate-700 border border-slate-200 select-all">
+                      <Mail className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--color-text-muted)' }} />
+                      <code className="flex-1 truncate rounded px-2 py-0.5 text-xs font-mono border select-all" style={{ color: 'var(--color-text)', backgroundColor: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
                         {user.email}
                       </code>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
-                      <KeyRound className="h-3.5 w-3.5 shrink-0 text-slate-400" />
-                      <code className="flex-1 truncate rounded bg-white px-2 py-0.5 text-xs font-mono text-slate-700 border border-slate-200 select-all">
-                        {user.password}
+                      <KeyRound className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--color-text-muted)' }} />
+                      <code className="flex-1 truncate rounded px-2 py-0.5 text-xs font-mono border select-all" style={{ color: 'var(--color-text)', backgroundColor: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                        {isPasswordVisible ? user.password : "•".repeat(8)}
                       </code>
+                      <button
+                        type="button"
+                        onClick={() => setVisiblePassword(isPasswordVisible ? null : user.id)}
+                        className="shrink-0 p-1 rounded-md transition hover:bg-slate-200 dark:hover:bg-slate-600"
+                        style={{ color: 'var(--color-text-muted)' }}
+                        aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+                      >
+                        {isPasswordVisible ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                      </button>
                     </div>
                   </div>
 
-                  {/* Login button */}
                   <button
                     type="button"
                     onClick={() => handleLogin(user)}
@@ -246,14 +230,6 @@ export default function DemoUsersPage() {
               </div>
             );
           })}
-        </div>
-
-        {/* Note */}
-        <div className="mt-10 text-center max-w-lg mx-auto rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-600">
-            Demo accounts are automatically created on the backend when you log in for the first time.
-            Your credentials are stored securely and used only for exploring the platform.
-          </p>
         </div>
       </div>
     </div>

@@ -1,46 +1,95 @@
 @import "tailwindcss";
 @import "@fortawesome/fontawesome-free/css/all.min.css";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-tertiary: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8fafc;
+  --color-navbar-bg: rgba(255, 255, 255, 0.8);
+}
+
+.dark {
+  --color-bg: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-tertiary: #334155;
+  --color-border: #334155;
+  --color-border-light: #1e293b;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-surface: #1e293b;
+  --color-surface-hover: #334155;
+  --color-navbar-bg: rgba(15, 23, 42, 0.8);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
 .user-profile {
-	width: 131px;
-	height: 51px;
-	border-radius: 15px;
-	cursor: pointer;
-	transition: 0.3s ease;
-	background: linear-gradient(
-		to bottom right,
-		#2e8eff 0%,
-		rgba(46, 142, 255, 0) 30%
-	);
-	background-color: rgba(46, 142, 255, 0.2);
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  width: 131px;
+  height: 51px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: linear-gradient(
+    to bottom right,
+    #2e8eff 0%,
+    rgba(46, 142, 255, 0) 30%
+  );
+  background-color: rgba(46, 142, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-profile:hover,
 .user-profile:focus {
-	background-color: rgba(46, 142, 255, 0.7);
-	box-shadow: 0 0 10px rgba(46, 142, 255, 0.5);
-	outline: none;
+  background-color: rgba(46, 142, 255, 0.7);
+  box-shadow: 0 0 10px rgba(46, 142, 255, 0.5);
+  outline: none;
 }
 
 .user-profile-inner {
-	width: 127px;
-	height: 47px;
-	border-radius: 13px;
-	background-color: #ffffff;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 15px;
-	color: #0f172a;
-	font-weight: 600;
+  width: 127px;
+  height: 47px;
+  border-radius: 13px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  color: #0f172a;
+  font-weight: 600;
 }
 
 .user-profile-inner svg {
-	width: 27px;
-	height: 27px;
-	fill: #0f172a;
+  width: 27px;
+  height: 27px;
+  fill: #0f172a;
+}
+
+.dark .user-profile-inner {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+.dark .user-profile-inner svg {
+  fill: #f1f5f9;
 }

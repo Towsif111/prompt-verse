@@ -51,62 +51,61 @@ export default function CreatorDashboardPage() {
     <div className="p-4 sm:p-6 space-y-6">
       <div className="flex items-center gap-3">
         <BarChart3 className="h-6 w-6 text-slate-600" />
-        <h1 className="text-2xl font-bold text-slate-900">Creator Dashboard</h1>
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text)' }}>Creator Dashboard</h1>
       </div>
 
-      {/* Summary Cards */}
+      {}
       <div className="grid gap-4 sm:grid-cols-3">
         {stats.map((stat, idx) => (
           <div
             key={idx}
-            className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition"
+            className="relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}
           >
             <div className={`absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-xl ${stat.bg}`}>
               <stat.icon className={`h-5 w-5 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`} />
             </div>
-            <p className="text-sm text-slate-500 mb-1">{stat.label}</p>
-            <p className="text-3xl font-black text-slate-800">{stat.value}</p>
+            <p className="text-sm mb-1" style={{ color: 'var(--color-text-secondary)' }}>{stat.label}</p>
+            <p className="text-3xl font-black" style={{ color: 'var(--color-text)' }}>{stat.value}</p>
           </div>
         ))}
       </div>
 
-      {/* Prompt Copies Chart */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-slate-800 mb-4">Prompt Copies Overview</h2>
+      {}        <div className="rounded-2xl p-6 shadow-sm" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+        <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--color-text)' }}>Prompt Copies Overview</h2>
         {analytics?.promptCopies && analytics.promptCopies.length > 0 ? (
           <div className="space-y-3">
             {analytics.promptCopies.map((prompt, idx) => (
-              <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-slate-50">
+              <div key={idx} className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--color-bg-tertiary)' }}>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold text-slate-700 truncate">{prompt.title}</p>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-sm font-semibold truncate" style={{ color: 'var(--color-text)' }}>{prompt.title}</p>
+                  <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
                     {new Date(prompt.createdAt).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 ml-4">
                   <Copy className="h-4 w-4 text-amber-500" />
-                  <span className="font-bold text-slate-800">{prompt.copyCount || 0}</span>
+                  <span className="font-bold" style={{ color: 'var(--color-text)' }}>{prompt.copyCount || 0}</span>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 text-slate-400">
+          <div className="text-center py-8" style={{ color: 'var(--color-text-muted)' }}>
             <FileText className="h-10 w-10 mx-auto mb-2" />
             <p className="text-sm">No prompts yet. Create your first prompt!</p>
           </div>
         )}
       </div>
 
-      {/* Monthly Growth */}
+      {}
       {analytics?.monthlyGrowth && analytics.monthlyGrowth.length > 0 && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-bold text-slate-800 mb-4">Monthly Growth</h2>
+        <div className="rounded-2xl p-6 shadow-sm" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+          <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--color-text)' }}>Monthly Growth</h2>
           <div className="space-y-3">
             {analytics.monthlyGrowth.map((month, idx) => (
               <div key={idx} className="flex items-center gap-3">
-                <span className="text-sm font-medium text-slate-500 w-20">{month._id}</span>
-                <div className="flex-1 h-6 rounded-full bg-slate-100 overflow-hidden">
+                <span className="text-sm font-medium w-20" style={{ color: 'var(--color-text-secondary)' }}>{month._id}</span>
+                <div className="flex-1 h-6 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-tertiary)' }}>
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 transition-all"
                     style={{
@@ -114,7 +113,7 @@ export default function CreatorDashboardPage() {
                     }}
                   />
                 </div>
-                <span className="text-sm font-bold text-slate-600 w-8 text-right">{month.count}</span>
+                <span className="text-sm font-bold w-8 text-right" style={{ color: 'var(--color-text-secondary)' }}>{month.count}</span>
               </div>
             ))}
           </div>

@@ -45,7 +45,7 @@ export default function PromptDetailClient({ prompt }) {
   const isPremium = user?.subscription === "premium" || user?.subscription === "Premium";
   const isPrivate = prompt.visibility === "Private" || prompt.visibility === "private";
 
-  // Fetch reviews
+  
   useEffect(() => {
     fetch(`http://localhost:5000/api/prompts/${prompt._id}/reviews`)
       .then((r) => r.json())
@@ -53,7 +53,7 @@ export default function PromptDetailClient({ prompt }) {
       .catch(() => {});
   }, [prompt._id]);
 
-  // Check bookmark status
+  
   useEffect(() => {
     if (user?.email) {
       fetch(`http://localhost:5000/api/bookmarks/${user.email}/${prompt._id}`)
@@ -137,7 +137,7 @@ export default function PromptDetailClient({ prompt }) {
         toast.success("Review submitted!");
         setNewRating(0);
         setNewComment("");
-        // Refresh reviews
+        
         const reviewsRes = await fetch(`http://localhost:5000/api/prompts/${prompt._id}/reviews`);
         setReviews(await reviewsRes.json());
       } else {
@@ -198,19 +198,19 @@ export default function PromptDetailClient({ prompt }) {
     : prompt.rating || 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen" style={{ background: `linear-gradient(to bottom, var(--color-bg-secondary), var(--color-bg))` }}>
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Back button */}
+        {}
         <Link
           href="/all-prompts"
-          className="group mb-6 inline-flex items-center gap-2 text-sm text-slate-500 transition hover:text-slate-700"
+          className="group mb-6 inline-flex items-center gap-2 text-sm transition" style={{ color: 'var(--color-text-secondary)' }}
         >
           <ArrowLeft size={16} className="transition group-hover:-translate-x-0.5" />
           Back to All Prompts
         </Link>
 
-        <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl">
-          {/* Hero image */}
+        <div className="overflow-hidden rounded-3xl shadow-xl" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+          {}
           <div className="relative h-64 w-full sm:h-80 lg:h-96">
             <Image
               src={thumbnail || "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200"}
@@ -242,18 +242,18 @@ export default function PromptDetailClient({ prompt }) {
           </div>
 
           <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-3">
-            {/* Main content */}
+            {}
             <div className="lg:col-span-2 space-y-6">
-              {/* Description */}
+              {}
               <section>
-                <h2 className="mb-3 text-lg font-bold text-slate-800">Description</h2>
-                <p className="text-base leading-relaxed text-slate-600">{description}</p>
+                <h2 className="mb-3 text-lg font-bold" style={{ color: 'var(--color-text)' }}>Description</h2>
+                <p className="text-base leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>{description}</p>
               </section>
 
-              {/* Tags */}
+              {}
               {tags && tags.length > 0 && (
                 <section>
-                  <h2 className="mb-3 text-lg font-bold text-slate-800">Tags</h2>
+                  <h2 className="mb-3 text-lg font-bold" style={{ color: 'var(--color-text)' }}>Tags</h2>
                   <div className="flex flex-wrap gap-2">
                     {tags.map((tag, i) => (
                       <span key={i} className="rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-medium text-indigo-700">
@@ -264,10 +264,10 @@ export default function PromptDetailClient({ prompt }) {
                 </section>
               )}
 
-              {/* Prompt text - with premium lock */}
+              {}
               <section>
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-lg font-bold text-slate-800">Prompt</h2>
+                  <h2 className="text-lg font-bold" style={{ color: 'var(--color-text)' }}>Prompt</h2>
                   {isPrivate && !isPremium && (
                     <span className="flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
                       <Lock size={12} />
@@ -295,35 +295,35 @@ export default function PromptDetailClient({ prompt }) {
                 </div>
               </section>
 
-              {/* Creator info */}
+              {}
               {creatorName && (
-                <section className="rounded-2xl border border-slate-100 bg-slate-50 p-5">
-                  <h2 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-400">Creator</h2>
+                <section className="rounded-2xl p-5" style={{ borderColor: 'var(--color-border-light)', backgroundColor: 'var(--color-bg-tertiary)' }}>
+                  <h2 className="mb-2 text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>Creator</h2>
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-indigo-500 text-white text-sm font-bold">
                       {creatorName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
                     </div>
-                    <p className="text-lg font-semibold text-slate-800">{creatorName}</p>
+                    <p className="text-lg font-semibold" style={{ color: 'var(--color-text)' }}>{creatorName}</p>
                   </div>
                 </section>
               )}
 
-              {/* Reviews Section */}
+              {}
               <section>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-bold text-slate-800">
+                  <h2 className="text-lg font-bold" style={{ color: 'var(--color-text)' }}>
                     Reviews ({reviews.length})
                   </h2>
                   <div className="flex items-center gap-1">
                     <Star size={16} className="fill-amber-400 text-amber-400" />
-                    <span className="font-semibold text-slate-800">{avgRating.toFixed(1)}</span>
+                    <span className="font-semibold" style={{ color: 'var(--color-text)' }}>{avgRating.toFixed(1)}</span>
                   </div>
                 </div>
 
-                {/* Review form - only for logged in, non-premium-locked users */}
+                {}
                 {user && !(isPrivate && !isPremium) ? (
-                  <div className="rounded-2xl border border-slate-200 bg-white p-4 mb-6">
-                    <h3 className="text-sm font-bold text-slate-700 mb-3">Write a Review</h3>
+                  <div className="rounded-2xl p-4 mb-6" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+                    <h3 className="text-sm font-bold mb-3" style={{ color: 'var(--color-text)' }}>Write a Review</h3>
                     <div className="flex items-center gap-1 mb-3">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -348,7 +348,7 @@ export default function PromptDetailClient({ prompt }) {
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
                       rows={3}
-                      className="w-full rounded-xl border border-slate-200 p-3 text-sm text-slate-700 placeholder-slate-400 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 resize-none"
+                      className="w-full rounded-xl p-3 text-sm placeholder-slate-400 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 resize-none" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text)', backgroundColor: 'var(--color-surface)' }}
                     />
                     <button
                       onClick={handleSubmitReview}
@@ -359,23 +359,22 @@ export default function PromptDetailClient({ prompt }) {
                       {submittingReview ? "Submitting..." : "Submit Review"}
                     </button>
                   </div>
-                ) : user && isPrivate && !isPremium ? (
-                  <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 mb-6 text-center">
-                    <Lock size={20} className="text-amber-500 mx-auto mb-2" />
-                    <p className="text-sm text-amber-700 font-medium">Subscribe to Premium to review this prompt</p>
+                ) : user && isPrivate && !isPremium ? (                  <div className="rounded-2xl p-4 mb-6 text-center" style={{ borderColor: '#fbbf24', backgroundColor: 'color-mix(in srgb, var(--color-bg) 90%, amber)' }}>
+                      <Lock size={20} className="text-amber-500 mx-auto mb-2" />
+                      <p className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Subscribe to Premium to review this prompt</p>
                   </div>
                 ) : (
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 mb-6 text-center">
-                    <p className="text-sm text-slate-500">
-                      <Link href="/auth/signin" className="text-cyan-600 font-medium hover:underline">Sign in</Link> to leave a review
+                  <div className="rounded-2xl p-4 mb-6 text-center" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-bg-tertiary)' }}>
+                    <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+                      <Link href="/auth/signin" className="text-cyan-600 dark:text-cyan-400 font-medium hover:underline">Sign in</Link> to leave a review
                     </p>
                   </div>
                 )}
 
-                {/* Reviews list */}
+                {}
                 <div className="space-y-4">
                   {reviews.length === 0 && (
-                    <p className="text-sm text-slate-400 text-center py-6">
+                    <p className="text-sm text-center py-6" style={{ color: 'var(--color-text-muted)' }}>
                       No reviews yet. Be the first to review!
                     </p>
                   )}
@@ -387,8 +386,8 @@ export default function PromptDetailClient({ prompt }) {
                             {review.userName?.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) || "U"}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-slate-800">{review.userName}</p>
-                            <p className="text-xs text-slate-400">
+                            <p className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>{review.userName}</p>
+                            <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
                               {new Date(review.createdAt).toLocaleDateString()}
                             </p>
                           </div>
@@ -404,7 +403,7 @@ export default function PromptDetailClient({ prompt }) {
                         </div>
                       </div>
                       {review.comment && (
-                        <p className="text-sm text-slate-600 leading-relaxed">{review.comment}</p>
+                        <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>{review.comment}</p>
                       )}
                     </div>
                   ))}
@@ -412,19 +411,18 @@ export default function PromptDetailClient({ prompt }) {
               </section>
             </div>
 
-            {/* Sidebar */}
+            {}
             <div className="space-y-4">
-              {/* Stats card */}
-              <div className="rounded-2xl border border-slate-100 bg-slate-50 p-5">
-                <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-400">Details</h3>
+              {}                  <div className="rounded-2xl p-5" style={{ borderColor: 'var(--color-border-light)', backgroundColor: 'var(--color-bg-tertiary)' }}>
+                <h3 className="mb-4 text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>Details</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100">
                       <Star size={16} className="text-amber-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400">Rating</p>
-                      <p className="font-semibold text-slate-800">{avgRating.toFixed(1)} / 5</p>
+                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Rating</p>
+                      <p className="font-semibold" style={{ color: 'var(--color-text)' }}>{avgRating.toFixed(1)} / 5</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -432,8 +430,8 @@ export default function PromptDetailClient({ prompt }) {
                       <Copy size={16} className="text-cyan-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400">Copies</p>
-                      <p className="font-semibold text-slate-800">{copyCount}</p>
+                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Copies</p>
+                      <p className="font-semibold" style={{ color: 'var(--color-text)' }}>{copyCount}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -441,8 +439,8 @@ export default function PromptDetailClient({ prompt }) {
                       <Tag size={16} className="text-purple-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400">Category</p>
-                      <p className="font-semibold text-slate-800">{category}</p>
+                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Category</p>
+                      <p className="font-semibold" style={{ color: 'var(--color-text)' }}>{category}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -450,8 +448,8 @@ export default function PromptDetailClient({ prompt }) {
                       <Wrench size={16} className="text-blue-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400">AI Tool</p>
-                      <p className="font-semibold text-slate-800">{aiTool}</p>
+                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>AI Tool</p>
+                      <p className="font-semibold" style={{ color: 'var(--color-text)' }}>{aiTool}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -459,8 +457,8 @@ export default function PromptDetailClient({ prompt }) {
                       <BarChart3 size={16} className="text-emerald-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-slate-400">Difficulty</p>
-                      <p className="font-semibold text-slate-800">{difficulty}</p>
+                      <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Difficulty</p>
+                      <p className="font-semibold" style={{ color: 'var(--color-text)' }}>{difficulty}</p>
                     </div>
                   </div>
                   {createdAt && (
@@ -469,8 +467,8 @@ export default function PromptDetailClient({ prompt }) {
                         <Calendar size={16} className="text-slate-600" />
                       </div>
                       <div>
-                        <p className="text-xs text-slate-400">Created</p>
-                        <p className="font-semibold text-slate-800">
+                        <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Created</p>
+                        <p className="font-semibold" style={{ color: 'var(--color-text)' }}>
                           {new Date(createdAt).toLocaleDateString()}
                         </p>
                       </div>
@@ -479,7 +477,7 @@ export default function PromptDetailClient({ prompt }) {
                 </div>
               </div>
 
-              {/* Action buttons */}
+              {}
               <div className="space-y-2">
                 <button
                   onClick={handleCopy}
@@ -494,11 +492,14 @@ export default function PromptDetailClient({ prompt }) {
                   <button
                     onClick={handleBookmark}
                     disabled={loadingStates.bookmark}
-                    className={`w-full rounded-xl border px-6 py-3 text-sm font-bold transition hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 ${
+                    className={`w-full rounded-xl px-6 py-3 text-sm font-bold transition hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 ${
                       isBookmarked
-                        ? "border-indigo-200 bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
-                        : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                    }`}
+                        ? "text-indigo-700 dark:text-indigo-300"
+                        : "text-slate-700 dark:text-slate-300"
+                    }`} style={{ 
+                      borderColor: isBookmarked ? 'var(--color-border)' : 'var(--color-border)',
+                      backgroundColor: isBookmarked ? 'var(--color-bg-tertiary)' : 'var(--color-surface)'
+                    }}
                   >
                     {isBookmarked ? (
                       <><BookmarkCheck size={16} className="inline mr-2" /> Bookmarked</>
@@ -511,7 +512,7 @@ export default function PromptDetailClient({ prompt }) {
                 {user && (
                   <button
                     onClick={() => setShowReportModal(true)}
-                    className="w-full rounded-xl border border-red-200 bg-white px-6 py-3 text-sm font-bold text-red-600 transition hover:bg-red-50 hover:-translate-y-0.5 active:translate-y-0"
+                    className="w-full rounded-xl px-6 py-3 text-sm font-bold text-red-600 dark:text-red-400 transition hover:bg-red-50 dark:hover:bg-red-900/30 hover:-translate-y-0.5 active:translate-y-0" style={{ borderColor: 'var(--color-border)' }}
                   >
                     <Flag size={16} className="inline mr-2" />
                     Report Prompt
@@ -523,12 +524,12 @@ export default function PromptDetailClient({ prompt }) {
         </div>
       </div>
 
-      {/* Report Modal */}
+      {}
       {showReportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+          <div className="w-full max-w-md rounded-2xl p-6 shadow-2xl" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-slate-900">Report Prompt</h3>
+              <h3 className="text-lg font-bold" style={{ color: 'var(--color-text)' }}>Report Prompt</h3>
               <button
                 onClick={() => setShowReportModal(false)}
                 className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
@@ -537,19 +538,21 @@ export default function PromptDetailClient({ prompt }) {
               </button>
             </div>
 
-            <p className="text-sm text-slate-500 mb-4">
+            <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>
               Why are you reporting this prompt?
             </p>
 
             <div className="space-y-2 mb-4">
               {REPORT_REASONS.map((reason) => (
                 <label
-                  key={reason}
-                  className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition ${
-                    reportReason === reason
-                      ? "border-red-300 bg-red-50"
-                      : "border-slate-200 hover:border-slate-300"
-                  }`}
+                  key={reason}                    className={`flex cursor-pointer items-center gap-3 rounded-xl p-3 transition ${
+                      reportReason === reason
+                        ? "bg-red-50 dark:bg-red-900/30"
+                        : "hover:border-slate-300"
+                    }`} style={{ 
+                      borderColor: reportReason === reason ? '#fca5a5' : 'var(--color-border)',
+                      backgroundColor: reportReason === reason ? undefined : 'var(--color-surface)'
+                    }}
                 >
                   <input
                     type="radio"
@@ -559,7 +562,7 @@ export default function PromptDetailClient({ prompt }) {
                     onChange={(e) => setReportReason(e.target.value)}
                     className="h-4 w-4 text-red-600 focus:ring-red-500"
                   />
-                  <span className="text-sm font-medium text-slate-700">{reason}</span>
+                  <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>{reason}</span>
                 </label>
               ))}
             </div>
@@ -569,7 +572,7 @@ export default function PromptDetailClient({ prompt }) {
               value={reportDescription}
               onChange={(e) => setReportDescription(e.target.value)}
               rows={3}
-              className="w-full rounded-xl border border-slate-200 p-3 text-sm text-slate-700 placeholder-slate-400 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400/20 resize-none mb-4"
+              className="w-full rounded-xl p-3 text-sm placeholder-slate-400 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400/20 resize-none mb-4" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text)', backgroundColor: 'var(--color-surface)' }}
             />
 
             <div className="flex gap-3">

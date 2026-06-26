@@ -15,7 +15,7 @@ const UserHomePage = () => {
 
     return (
         <div>
-            <h2 className='text-2xl font-bold'>Welcome Back,{user?.name}</h2>
+            <h2 className='text-2xl font-bold' style={{ color: 'var(--color-text)' }}>Welcome Back, {user?.name}</h2>
         </div>
     );
 };

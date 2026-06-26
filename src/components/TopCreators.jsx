@@ -21,7 +21,7 @@ export default function TopCreators({ creators = [] }) {
   const topCreators = creators.slice(0, 6);
 
   return (
-    <section id="top-creators" className="container-shell py-16 bg-gradient-to-b from-white to-slate-50">
+    <section id="top-creators" className="container-shell py-16 transition-colors duration-300" style={{ background: 'linear-gradient(to bottom, var(--color-bg), color-mix(in srgb, var(--color-bg) 95%, slate))' }}>
       <div className="mx-auto max-w-2xl text-center mb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -35,7 +35,7 @@ export default function TopCreators({ creators = [] }) {
           <h2 className="mt-2 text-4xl font-black bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">
             Top Creators
           </h2>
-          <p className="mt-3 text-slate-500">
+          <p className="mt-3" style={{ color: 'var(--color-text-secondary)' }}>
             The most active and highest-rated prompt creators in our community
           </p>
         </motion.div>
@@ -50,8 +50,8 @@ export default function TopCreators({ creators = [] }) {
             viewport={{ once: true }}
             transition={{ delay: index * 0.08, duration: 0.4 }}
           >
-            <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              {/* Rank badge for top 3 */}
+            <div className="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+              {}
               {index < 3 && (
                 <div className="absolute -right-8 -top-8 z-10 h-20 w-20 rotate-12">
                   <div
@@ -63,7 +63,7 @@ export default function TopCreators({ creators = [] }) {
               )}
 
               <div className="p-5">
-                {/* Avatar with initials */}
+                {}
                 <div className="flex items-center gap-4 mb-4">
                   <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-indigo-500 text-white font-bold text-lg shadow-md">
                     {creator.name
@@ -74,49 +74,49 @@ export default function TopCreators({ creators = [] }) {
                       .slice(0, 2)}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-lg font-bold text-slate-800 truncate">
+                    <h3 className="text-lg font-bold truncate" style={{ color: 'var(--color-text)' }}>
                       {creator.name}
                     </h3>
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-0.5">
+                    <div className="flex items-center gap-1.5 text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>
                       <Mail size={12} />
                       <span className="truncate">{creator.email}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Stats grid */}
-                <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-slate-100">
+                {}
+                <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t" style={{ borderColor: 'var(--color-border-light)' }}>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 text-cyan-600">
                       <FileText size={14} />
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold" style={{ color: 'var(--color-text)' }}>
                         {creator.promptCount}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-0.5">Prompts</p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Prompts</p>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 text-amber-500">
                       <Copy size={14} />
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold" style={{ color: 'var(--color-text)' }}>
                         {creator.totalCopies}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-0.5">Copies</p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Copies</p>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 text-purple-500">
                       <Star size={14} />
-                      <span className="font-bold text-slate-800">
+                      <span className="font-bold" style={{ color: 'var(--color-text)' }}>
                         {creator.avgRating.toFixed(1)}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-0.5">Rating</p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Rating</p>
                   </div>
                 </div>
               </div>
 
-              {/* Hover accent bar */}
+              {}
               <div className="h-1 w-0 bg-gradient-to-r from-cyan-400 to-indigo-500 transition-all duration-300 group-hover:w-full" />
             </div>
           </motion.div>

@@ -8,7 +8,7 @@ export default function AllPromptsSection({ prompts = [] }) {
           Explore
         </p>
         <h2 className="mt-2 text-4xl font-black">All Prompts</h2>
-        <p className="mt-3 text-default-500">
+        <p className="mt-3" style={{ color: 'var(--color-text-secondary)' }}>
           Browse our curated collection of AI prompts crafted by the community
         </p>
       </div>

@@ -53,27 +53,27 @@ export default function AdminDashboardPage() {
     <div className="p-4 sm:p-6 space-y-6">
       <div className="flex items-center gap-3">
         <BarChart3 className="h-6 w-6 text-slate-600" />
-        <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text)' }}>Admin Dashboard</h1>
       </div>
 
-      {/* Stats Grid */}
+      {}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((stat, idx) => (
           <Link
             key={idx}
             href={stat.href}
-            className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition hover:-translate-y-0.5"
+            className="relative overflow-hidden rounded-2xl p-6 shadow-sm hover:shadow-md transition hover:-translate-y-0.5" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}
           >
             <div className={`absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-xl ${stat.bg}`}>
               <stat.icon className={`h-5 w-5 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`} />
             </div>
-            <p className="text-sm text-slate-500 mb-1">{stat.label}</p>
-            <p className="text-3xl font-black text-slate-800">{stat.value}</p>
+            <p className="text-sm mb-1" style={{ color: 'var(--color-text-secondary)' }}>{stat.label}</p>
+            <p className="text-3xl font-black" style={{ color: 'var(--color-text)' }}>{stat.value}</p>
           </Link>
         ))}
       </div>
 
-      {/* Quick Links */}
+      {}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
           { label: "Manage Users", desc: "View, edit roles, delete users", href: "/dashboard/admin/users", icon: Users },
@@ -85,26 +85,26 @@ export default function AdminDashboardPage() {
           <Link
             key={idx}
             href={link.href}
-            className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition hover:-translate-y-0.5"
+            className="rounded-2xl p-5 shadow-sm hover:shadow-md transition hover:-translate-y-0.5" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}
           >
             <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50">
               <link.icon className="h-5 w-5 text-indigo-600" />
             </div>
-            <h3 className="font-bold text-slate-800">{link.label}</h3>
-            <p className="text-xs text-slate-400 mt-1">{link.desc}</p>
+            <h3 className="font-bold" style={{ color: 'var(--color-text)' }}>{link.label}</h3>
+            <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{link.desc}</p>
           </Link>
         ))}
       </div>
 
-      {/* Monthly Growth */}
+      {}
       {analytics?.monthlyGrowth && analytics.monthlyGrowth.length > 0 && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-bold text-slate-800 mb-4">Monthly Prompt Growth</h2>
+        <div className="rounded-2xl p-6 shadow-sm" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+          <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--color-text)' }}>Monthly Prompt Growth</h2>
           <div className="space-y-3">
             {analytics.monthlyGrowth.map((month, idx) => (
               <div key={idx} className="flex items-center gap-3">
-                <span className="text-sm font-medium text-slate-500 w-20">{month._id}</span>
-                <div className="flex-1 h-6 rounded-full bg-slate-100 overflow-hidden">
+                <span className="text-sm font-medium w-20" style={{ color: 'var(--color-text-secondary)' }}>{month._id}</span>
+                <div className="flex-1 h-6 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--color-bg-tertiary)' }}>
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 transition-all"
                     style={{
@@ -112,7 +112,7 @@ export default function AdminDashboardPage() {
                     }}
                   />
                 </div>
-                <span className="text-sm font-bold text-slate-600 w-8 text-right">{month.count}</span>
+                <span className="text-sm font-bold w-8 text-right" style={{ color: 'var(--color-text-secondary)' }}>{month.count}</span>
               </div>
             ))}
           </div>

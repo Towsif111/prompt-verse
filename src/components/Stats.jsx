@@ -14,7 +14,7 @@ export default function PlatformStats({ stats }) {
   ];
 
   return (
-    <section className="container-shell py-16 bg-gradient-to-r from-cyan-50 via-white to-indigo-50">
+    <section className="container-shell py-16 transition-colors duration-300" style={{ background: 'linear-gradient(to right, color-mix(in srgb, var(--color-bg) 90%, cyan), var(--color-bg), color-mix(in srgb, var(--color-bg) 90%, indigo))' }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ export default function PlatformStats({ stats }) {
         <h2 className="text-3xl font-bold text-center mb-2">
           PromptVerse in Numbers
         </h2>
-        <p className="text-center text-slate-500 mb-10">
+        <p className="text-center mb-10" style={{ color: 'var(--color-text-secondary)' }}>
           Our growing community at a glance
         </p>
       </motion.div>
@@ -39,7 +39,7 @@ export default function PlatformStats({ stats }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.08, duration: 0.4 }}
-              className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              className="group rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}
             >
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-indigo-500 text-white shadow-md group-hover:scale-110 transition-transform duration-300">
                 <Icon size={22} />
@@ -47,7 +47,7 @@ export default function PlatformStats({ stats }) {
               <h3 className="text-4xl font-black bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">
                 {item.value}+
               </h3>
-              <p className="mt-1 text-sm font-medium text-slate-500">
+              <p className="mt-1 text-sm font-medium" style={{ color: 'var(--color-text-secondary)' }}>
                 {item.label}
               </p>
             </motion.div>

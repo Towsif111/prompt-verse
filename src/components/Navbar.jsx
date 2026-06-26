@@ -2,16 +2,18 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogIn, Sparkles, UserPlus, LogOut, ChevronDown, LayoutDashboard, Shield, Crown } from "lucide-react";
+import { LogIn, Sparkles, UserPlus, LogOut, ChevronDown, LayoutDashboard, Shield, Crown, Moon, Sun } from "lucide-react";
 import toast from "react-hot-toast";
 import { signOut, useSession } from "@/lib/auth-client";
 import { useState, useRef, useEffect } from "react";
+import { useTheme } from "./ThemeProvider";
 
 function Navbar() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -57,55 +59,64 @@ function Navbar() {
   };
 
   const getRoleBadge = () => {
-    if (isAdmin) return { text: "Admin", color: "text-indigo-600", icon: Shield };
-    if (isCreator) return { text: "Creator", color: "text-amber-600", icon: Crown };
+    if (isAdmin) return { text: "Admin", color: "text-indigo-600 dark:text-indigo-400", icon: Shield };
+    if (isCreator) return { text: "Creator", color: "text-amber-600 dark:text-amber-400", icon: Crown };
     return null;
   };
 
   const role = getRoleBadge();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-xl transition-colors duration-300" style={{ backgroundColor: 'var(--color-navbar-bg)' }}>
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-600 shadow-lg shadow-cyan-500/20 ring-1 ring-white/10 transition duration-200 group-hover:scale-[1.03]">
             <Sparkles className="h-5 w-5 text-white" />
           </span>
           <span className="flex flex-col leading-tight">
-            <span className="text-2xl font-semibold text-cyan-700/80">
+            <span className="text-2xl font-semibold text-cyan-700/80 dark:text-cyan-400/80">
               Prompt Verse
             </span>
           </span>
         </Link>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-3 md:flex">
           <Link
             href="/"
-            className="btn btn-ghost btn-sm border border-transparent text-2xl text-slate-700 hover:border-slate-200 hover:bg-slate-100"
+            className="btn font-bold btn-ghost btn-sm border border-transparent text-2xl text-slate-700 dark:text-slate-300 hover:border-slate-200 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             Home
           </Link>
           <Link
             href="/all-prompts"
-            className="btn btn-ghost btn-sm border border-transparent text-2xl text-slate-700 hover:border-slate-200 hover:bg-slate-100"
+            className="btn font-bold btn-ghost btn-sm border border-transparent text-2xl text-slate-700 dark:text-slate-300 hover:border-slate-200 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             All Prompts
           </Link>
           <Link
             href="/pricing"
-            className="btn btn-ghost btn-sm border border-transparent text-2xl text-slate-700 hover:border-slate-200 hover:bg-slate-100"
+            className="btn font-bold btn-ghost btn-sm border border-transparent text-2xl text-slate-700 dark:text-slate-300 hover:border-slate-200 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             Pricing
           </Link>
         </div>
 
         <div className="flex items-center gap-3">
+          {}
+          <button
+            onClick={toggleTheme}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition shadow-sm"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+
           {isPending ? null : user ? (
             <div className="relative" ref={dropdownRef}>
               <button
                 type="button"
                 onClick={() => setShowDropdown(!showDropdown)}
-                className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-1.5 transition hover:border-slate-300 hover:shadow-sm"
+                className="flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-3 py-1.5 transition hover:border-slate-300 dark:hover:border-slate-500 hover:shadow-sm"
               >
                 {user.image ? (
                   <img
@@ -125,23 +136,23 @@ function Navbar() {
                 >
                   {getInitials(user.name)}
                 </span>
-                <span className="hidden text-sm font-medium text-slate-700 sm:inline">
+                <span className="hidden text-sm font-medium text-slate-700 dark:text-slate-300 sm:inline">
                   {user.name || "User"}
                 </span>
-                <ChevronDown className="h-4 w-4 text-slate-400" />
+                <ChevronDown className="h-4 w-4 text-slate-400 dark:text-slate-500" />
               </button>
 
               {showDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
-                  <div className="border-b border-slate-100 px-4 py-3">
-                    <p className="text-sm font-medium text-slate-900 truncate">
+                <div className="absolute right-0 top-full mt-2 w-64 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg dark:shadow-slate-900/50">
+                  <div className="border-b border-slate-100 dark:border-slate-700 px-4 py-3">
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
                       {user.name || "User"}
                     </p>
-                    <p className="text-xs text-slate-500 truncate">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
                       {user.email}
                     </p>
                     {role && (
-                      <span className={`mt-1 inline-flex items-center gap-1 rounded-full bg-slate-50 px-2 py-0.5 text-xs font-medium ${role.color}`}>
+                      <span className={`mt-1 inline-flex items-center gap-1 rounded-full bg-slate-50 dark:bg-slate-700 px-2 py-0.5 text-xs font-medium ${role.color}`}>
                         <role.icon size={12} />
                         {role.text}
                       </span>
@@ -151,19 +162,18 @@ function Navbar() {
                     <Link
                       href={getDashboardHref()}
                       onClick={() => setShowDropdown(false)}
-                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700"
                     >
                       <LayoutDashboard className="h-4 w-4" />
                       Dashboard
                     </Link>
                     
-                    {/* Role-specific quick links */}
                     {isAdmin && (
                       <>
                         <Link
                           href="/dashboard/admin/users"
                           onClick={() => setShowDropdown(false)}
-                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700"
                         >
                           <Shield className="h-4 w-4" />
                           Manage Users
@@ -171,7 +181,7 @@ function Navbar() {
                         <Link
                           href="/dashboard/admin/prompts"
                           onClick={() => setShowDropdown(false)}
-                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700"
                         >
                           <Shield className="h-4 w-4" />
                           Manage Prompts
@@ -183,7 +193,7 @@ function Navbar() {
                       <Link
                         href="/dashboard/creator"
                         onClick={() => setShowDropdown(false)}
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700"
                       >
                         <Crown className="h-4 w-4" />
                         Creator Dashboard
@@ -193,7 +203,7 @@ function Navbar() {
                     <Link
                       href="/dashboard/profile"
                       onClick={() => setShowDropdown(false)}
-                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700"
                     >
                       <UserPlus className="h-4 w-4" />
                       Profile Settings
@@ -203,7 +213,7 @@ function Navbar() {
                       <Link
                         href="/payment"
                         onClick={() => setShowDropdown(false)}
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-amber-700 transition hover:bg-amber-50"
+                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-amber-700 dark:text-amber-400 transition hover:bg-amber-50 dark:hover:bg-amber-900/30"
                       >
                         <Crown className="h-4 w-4" />
                         Upgrade to Premium
@@ -213,7 +223,7 @@ function Navbar() {
                     <button
                       type="button"
                       onClick={handleSignOut}
-                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 transition hover:bg-red-50"
+                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 dark:text-red-400 transition hover:bg-red-50 dark:hover:bg-red-900/30"
                     >
                       <LogOut className="h-4 w-4" />
                       Sign Out

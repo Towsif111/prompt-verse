@@ -1,9 +1,10 @@
 import AllPromptsPageContent from "@/components/AllPromptsPageContent";
+import { fetchPrompts } from "@/lib/api";
+
+export const dynamic = 'force-dynamic';
 
 export default async function PromptsPage() {
-  const res = await fetch('http://localhost:5000/all-promts');
-  const data = await res.json();
-  const prompts = data.prompts || data;
+  const prompts = await fetchPrompts();
 
   return <AllPromptsPageContent prompts={prompts} />;
 }

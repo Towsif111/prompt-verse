@@ -5,11 +5,12 @@ import TopCreators from "@/components/TopCreators";
 import CustomerReviewsSection from "@/components/CustomerReviews";
 import PlatformStats from "@/components/Stats";
 import FaqSection from "@/components/FAQ";
+import { fetchPrompts } from "@/lib/api";
+
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const res = await fetch('http://localhost:5000/all-promts');
-  const data = await res.json();
-  const prompts = data.prompts || data;
+  const prompts = await fetchPrompts();
 
   // Aggregate prompts by creator to compute top creators
   const creatorMap = {};

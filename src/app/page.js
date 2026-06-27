@@ -10,6 +10,7 @@ import { fetchPrompts } from "@/lib/api";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
+
   const prompts = await fetchPrompts();
 
   // Aggregate prompts by creator to compute top creators

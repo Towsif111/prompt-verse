@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const metadata = {
+  title: "PromptHub",
+  description: "Browse and share AI prompts crafted by the community",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -22,23 +27,10 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme') || 'light';
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  }
-                } catch(e) {}
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body className="flex min-h-full flex-col mx-auto w-full" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
+      <body
+        className="flex min-h-full flex-col mx-auto w-full"
+        style={{ backgroundColor: "var(--color-bg)", color: "var(--color-text)" }}
+      >
         <ThemeProvider>
           <Navbar />
           <main className="flex-1 w-full">{children}</main>

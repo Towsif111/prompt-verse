@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
+import { API_BASE_URL } from "@/lib/api";
 import Link from "next/link";
 import { BookmarkCheck, ExternalLink, Trash2, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -21,7 +22,7 @@ export default function SavedPromptsPage() {
       return;
     }
 
-    fetch(`http://localhost:5000/api/bookmarks/${session.user.email}`)
+    fetch(`${API_BASE_URL}/api/bookmarks/${session.user.email}`)
       .then((r) => r.json())
       .then(setPrompts)
       .catch(() => toast.error("Failed to load bookmarks"))
@@ -31,7 +32,7 @@ export default function SavedPromptsPage() {
   const handleRemoveBookmark = async (promptId) => {
     setRemoving(promptId);
     try {
-      const res = await fetch("http://localhost:5000/api/bookmarks/toggle", {
+      const res = await fetch(`${API_BASE_URL}/api/bookmarks/toggle`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userEmail: session?.user?.email, promptId }),

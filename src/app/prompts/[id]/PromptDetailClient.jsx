@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api";
 import {
   ArrowLeft, Star, Copy, Calendar, Tag, Wrench, BarChart3,
   Bookmark, BookmarkCheck, Flag, MessageSquare, Eye, Lock,
@@ -34,6 +35,8 @@ export default function PromptDetailClient({ prompt }) {
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportReason, setReportReason] = useState("");
   const [reportDescription, setReportDescription] = useState("");
+  const [reportUserEmail, setReportUserEmail] = useState("");
+  const [reportUserName, setReportUserName] = useState("");
   const [submittingReport, setSubmittingReport] = useState(false);
   const [loadingStates, setLoadingStates] = useState({
     bookmark: false,
@@ -47,7 +50,7 @@ export default function PromptDetailClient({ prompt }) {
 
   
   useEffect(() => {
-    fetch(`http://localhost:5000/api/prompts/${prompt._id}/reviews`)
+    fetch(`${API_BASE_URL}/api/prompts/${prompt._id}/reviews`)
       .then((r) => r.json())
       .then(setReviews)
       .catch(() => {});
@@ -56,22 +59,37 @@ export default function PromptDetailClient({ prompt }) {
   
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:5000/api/bookmarks/${user.email}/${prompt._id}`)
+      fetch(`${API_BASE_URL}/api/bookmarks/${user.email}/${prompt._id}`)
         .then((r) => r.json())
         .then((data) => setIsBookmarked(data.bookmarked))
         .catch(() => {});
+    } else {
+      const stored = JSON.parse(localStorage.getItem("bookmarkedPrompts") || "[]");
+      setIsBookmarked(stored.includes(prompt._id));
     }
   }, [user?.email, prompt._id]);
 
   const handleBookmark = useCallback(async () => {
-    if (!user) {
-      toast.error("Please sign in to bookmark prompts");
-      return;
-    }
     if (loadingStates.bookmark) return;
     setLoadingStates((p) => ({ ...p, bookmark: true }));
+    if (!user) {
+      const stored = JSON.parse(localStorage.getItem("bookmarkedPrompts") || "[]");
+      const idx = stored.indexOf(prompt._id);
+      if (idx >= 0) {
+        stored.splice(idx, 1);
+        setIsBookmarked(false);
+        toast.success("Bookmark removed");
+      } else {
+        stored.push(prompt._id);
+        setIsBookmarked(true);
+        toast.success("Prompt bookmarked!");
+      }
+      localStorage.setItem("bookmarkedPrompts", JSON.stringify(stored));
+      setLoadingStates((p) => ({ ...p, bookmark: false }));
+      return;
+    }
     try {
-      const res = await fetch("http://localhost:5000/api/bookmarks/toggle", {
+      const res = await fetch(`${API_BASE_URL}/api/bookmarks/toggle`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userEmail: user.email, promptId: prompt._id }),
@@ -91,24 +109,18 @@ export default function PromptDetailClient({ prompt }) {
   }, [user, prompt._id, loadingStates.bookmark]);
 
   const handleCopy = useCallback(async () => {
-    if (isPrivate && !isPremium) {
-      toast.error("Subscribe to Premium to copy this prompt");
-      return;
-    }
     setLoadingStates((p) => ({ ...p, copy: true }));
     try {
       await navigator.clipboard.writeText(prompt.prompt || prompt.description);
       toast.success("Copied to clipboard!");
       setCopyCount((c) => c + 1);
-      await fetch(`http://localhost:5000/api/prompts/${prompt._id}/copy`, {
-        method: "POST",
-      });
     } catch {
       toast.error("Failed to copy");
     } finally {
+      fetch(`${API_BASE_URL}/api/prompts/${prompt._id}/copy`, { method: "POST" }).catch(() => {});
       setLoadingStates((p) => ({ ...p, copy: false }));
     }
-  }, [prompt, isPrivate, isPremium]);
+  }, [prompt]);
 
   const handleSubmitReview = useCallback(async () => {
     if (!user) {
@@ -121,7 +133,7 @@ export default function PromptDetailClient({ prompt }) {
     }
     setSubmittingReview(true);
     try {
-      const res = await fetch("http://localhost:5000/api/reviews", {
+      const res = await fetch(`${API_BASE_URL}/api/reviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -138,7 +150,7 @@ export default function PromptDetailClient({ prompt }) {
         setNewRating(0);
         setNewComment("");
         
-        const reviewsRes = await fetch(`http://localhost:5000/api/prompts/${prompt._id}/reviews`);
+        const reviewsRes = await fetch(`${API_BASE_URL}/api/prompts/${prompt._id}/reviews`);
         setReviews(await reviewsRes.json());
       } else {
         toast.error(data.error || "Failed to submit review");
@@ -151,22 +163,25 @@ export default function PromptDetailClient({ prompt }) {
   }, [user, prompt._id, newRating, newComment]);
 
   const handleSubmitReport = useCallback(async () => {
-    if (!user) {
-      toast.error("Please sign in to report");
-      return;
-    }
     if (!reportReason) {
       toast.error("Please select a reason");
       return;
     }
+    const email = user?.email || reportUserEmail;
+    const name = user?.name || reportUserName || "Anonymous";
+    if (!email) {
+      toast.error("Please provide your email");
+      return;
+    }
     setSubmittingReport(true);
     try {
-      const res = await fetch("http://localhost:5000/api/reports", {
+      const res = await fetch(`${API_BASE_URL}/api/reports`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           promptId: prompt._id,
-          userEmail: user.email,
+          userEmail: email,
+          userName: name,
           reason: reportReason,
           description: reportDescription,
         }),
@@ -176,6 +191,8 @@ export default function PromptDetailClient({ prompt }) {
         setShowReportModal(false);
         setReportReason("");
         setReportDescription("");
+        setReportUserEmail("");
+        setReportUserName("");
       } else {
         const data = await res.json();
         toast.error(data.error || "Failed to submit report");
@@ -185,7 +202,7 @@ export default function PromptDetailClient({ prompt }) {
     } finally {
       setSubmittingReport(false);
     }
-  }, [user, prompt._id, reportReason, reportDescription]);
+  }, [user, prompt._id, reportReason, reportDescription, reportUserEmail, reportUserName]);
 
   const {
     _id, title, description, category, aiTool, difficulty,
@@ -488,36 +505,32 @@ export default function PromptDetailClient({ prompt }) {
                   {loadingStates.copy ? "Copying..." : "Copy Prompt"}
                 </button>
 
-                {user && (
-                  <button
-                    onClick={handleBookmark}
-                    disabled={loadingStates.bookmark}
-                    className={`w-full rounded-xl px-6 py-3 text-sm font-bold transition hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 ${
-                      isBookmarked
-                        ? "text-indigo-700 dark:text-indigo-300"
-                        : "text-slate-700 dark:text-slate-300"
-                    }`} style={{ 
-                      borderColor: isBookmarked ? 'var(--color-border)' : 'var(--color-border)',
-                      backgroundColor: isBookmarked ? 'var(--color-bg-tertiary)' : 'var(--color-surface)'
-                    }}
-                  >
-                    {isBookmarked ? (
-                      <><BookmarkCheck size={16} className="inline mr-2" /> Bookmarked</>
-                    ) : (
-                      <><Bookmark size={16} className="inline mr-2" /> Bookmark</>
-                    )}
-                  </button>
-                )}
+                <button
+                  onClick={handleBookmark}
+                  disabled={loadingStates.bookmark}
+                  className={`w-full rounded-xl px-6 py-3 text-sm font-bold transition hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 ${
+                    isBookmarked
+                      ? "text-indigo-700 dark:text-indigo-300"
+                      : "text-slate-700 dark:text-slate-300"
+                  }`} style={{ 
+                    borderColor: isBookmarked ? 'var(--color-border)' : 'var(--color-border)',
+                    backgroundColor: isBookmarked ? 'var(--color-bg-tertiary)' : 'var(--color-surface)'
+                  }}
+                >
+                  {isBookmarked ? (
+                    <><BookmarkCheck size={16} className="inline mr-2" /> Bookmarked</>
+                  ) : (
+                    <><Bookmark size={16} className="inline mr-2" /> Bookmark</>
+                  )}
+                </button>
 
-                {user && (
-                  <button
-                    onClick={() => setShowReportModal(true)}
-                    className="w-full rounded-xl px-6 py-3 text-sm font-bold text-red-600 dark:text-red-400 transition hover:bg-red-50 dark:hover:bg-red-900/30 hover:-translate-y-0.5 active:translate-y-0" style={{ borderColor: 'var(--color-border)' }}
-                  >
-                    <Flag size={16} className="inline mr-2" />
-                    Report Prompt
-                  </button>
-                )}
+                <button
+                  onClick={() => setShowReportModal(true)}
+                  className="w-full rounded-xl px-6 py-3 text-sm font-bold text-red-600 dark:text-red-400 transition hover:bg-red-50 dark:hover:bg-red-900/30 hover:-translate-y-0.5 active:translate-y-0" style={{ borderColor: 'var(--color-border)' }}
+                >
+                  <Flag size={16} className="inline mr-2" />
+                  Report Prompt
+                </button>
               </div>
             </div>
           </div>
@@ -541,6 +554,26 @@ export default function PromptDetailClient({ prompt }) {
             <p className="text-sm mb-4" style={{ color: 'var(--color-text-secondary)' }}>
               Why are you reporting this prompt?
             </p>
+
+            {!user && (
+              <div className="space-y-3 mb-4">
+                <input
+                  type="email"
+                  placeholder="Your email *"
+                  value={reportUserEmail}
+                  onChange={(e) => setReportUserEmail(e.target.value)}
+                  className="w-full rounded-xl p-3 text-sm placeholder-slate-400 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400/20" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text)', backgroundColor: 'var(--color-surface)' }}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Your name (optional)"
+                  value={reportUserName}
+                  onChange={(e) => setReportUserName(e.target.value)}
+                  className="w-full rounded-xl p-3 text-sm placeholder-slate-400 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400/20" style={{ borderColor: 'var(--color-border)', color: 'var(--color-text)', backgroundColor: 'var(--color-surface)' }}
+                />
+              </div>
+            )}
 
             <div className="space-y-2 mb-4">
               {REPORT_REASONS.map((reason) => (
@@ -584,7 +617,7 @@ export default function PromptDetailClient({ prompt }) {
               </button>
               <button
                 onClick={handleSubmitReport}
-                disabled={!reportReason || submittingReport}
+                disabled={!reportReason || submittingReport || (!user && !reportUserEmail)}
                 className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-bold text-white hover:bg-red-700 transition disabled:opacity-50"
               >
                 {submittingReport ? "Submitting..." : "Submit Report"}

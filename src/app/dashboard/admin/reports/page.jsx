@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
+import { API_BASE_URL } from "@/lib/api";
 import { Flag, Trash2, CheckCircle, AlertTriangle, Loader2, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -26,7 +27,7 @@ export default function AdminReportsPage() {
 
   const fetchReports = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/reports", {
+      const res = await fetch(`${API_BASE_URL}/api/reports`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       const data = await res.json();
@@ -40,7 +41,7 @@ export default function AdminReportsPage() {
 
   const handleDismiss = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/reports/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/reports/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +61,7 @@ export default function AdminReportsPage() {
   const handleDeletePrompt = async (promptId) => {
     if (!confirm("Delete the reported prompt permanently?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/prompts/${promptId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/prompts/${promptId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${getToken()}` },
       });
@@ -75,7 +76,7 @@ export default function AdminReportsPage() {
 
   const handleDeleteReport = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/reports/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/reports/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${getToken()}` },
       });

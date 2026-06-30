@@ -102,38 +102,7 @@ const SignUpPage = () => {
             <FieldError />
           </TextField>
 
-          <div className="space-y-3">
-            <Label>Choose Avatar</Label>
-            <div className="flex items-center gap-3 flex-wrap">
-              {PUBLIC_AVATARS.map((avatar) => (
-                <button
-                  key={avatar.src}
-                  type="button"
-                  onClick={() => setSelectedAvatar(avatar.src)}
-                  className={`relative flex flex-col items-center gap-1 rounded-xl border-2 p-2 transition-all ${
-                    selectedAvatar === avatar.src
-                      ? "border-cyan-500 bg-cyan-50 dark:border-cyan-400 dark:bg-cyan-900/30"
-                      : "border-slate-200 dark:border-slate-600 hover:border-slate-300"
-                  }`}
-                >
-                  <Image
-                    src={avatar.src}
-                    alt={avatar.label}
-                    width={48}
-                    height={48}
-                    className="rounded-lg object-cover"
-                  />
-                  <span className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>{avatar.label}</span>
-                </button>
-              ))}
-            </div>
-            <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Or provide a custom URL below</p>
-            <TextField name="image" type="url">
-              <Label>Custom Image URL</Label>
-              <Input placeholder="https://example.com/avatar.jpg" />
-              <FieldError />
-            </TextField>
-          </div>
+          
 
           <TextField
             isRequired
